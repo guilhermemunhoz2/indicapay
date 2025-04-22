@@ -5,46 +5,103 @@
   <title>IndicaPay</title>
   <style>
     body {
-      background-color: #111;
-      color: #00FF00;
-      font-family: Arial, sans-serif;
-      text-align: center;
       margin: 0;
       padding: 0;
+      background-color: #000;
+      color: #00FF00;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
     .navbar {
-      background-color: black;
-      padding: 10px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      box-sizing: border-box;
+      position: absolute;
+      top: 0;
+      left: 0;
     }
-    .navbar a {
-      color: #00FF00;
-      margin: 0 10px;
-      text-decoration: none;
+    .logo {
+      font-size: 28px;
       font-weight: bold;
     }
-    .footer {
-      background-color: black;
+    .nav-buttons a {
       color: #00FF00;
-      padding: 10px;
-      position: fixed;
-      width: 100%;
-      bottom: 0;
+      border: 1px solid #00FF00;
+      padding: 10px 20px;
+      border-radius: 10px;
+      text-decoration: none;
+      margin-left: 15px;
+      font-weight: bold;
+    }
+    .nav-buttons a:hover {
+      background-color: #00FF00;
+      color: #000;
+      transition: 0.3s;
+    }
+    .main-content {
+      text-align: center;
+      margin-top: 150px;
+      padding: 20px;
+    }
+    .main-content h1 {
+      font-size: 60px;
+      font-weight: bold;
+      margin: 0;
+      line-height: 1.2;
+    }
+    .main-content p {
+      font-size: 20px;
+      margin: 30px 0;
+    }
+    .cta-button {
+      background-color: #00FF00;
+      color: #000;
+      border: none;
+      padding: 15px 30px;
+      font-size: 22px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .cta-button:hover {
+      background-color: #00cc00;
+    }
+    .saiba-mais {
+      display: block;
+      margin-top: 20px;
+      color: #00FF00;
+      text-decoration: none;
+      font-size: 18px;
+    }
+    .saiba-mais:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
 <body>
 
 <div class="navbar">
-  <a href="login.html">Login</a>
-  <a href="cadastro.html">Cadastro</a>
+  <div class="logo">INDICAPAY</div>
+  <div class="nav-buttons">
+    <a href="cadastro.html">Cadastrar</a>
+    <a href="login.html">Login</a>
+  </div>
 </div>
 
-<h1>Bem-vindo ao IndicaPay</h1>
-<p>O seu site de indicações financeiras.</p>
-<p><a href="#" style="color: #00FF00; text-decoration: underline;">Saiba mais</a></p>
-
-<div class="footer">
-  © 2025 IndicaPay. Todos os direitos reservados.
+<div class="main-content">
+  <h1>INVISTA +<br>INDIQUE<br>E GANHE</h1>
+  <p>Deposite R$50, indique 5 pessoas, e ganhe R$150 quando todas concluírem o depósito.</p>
+  <a href="cadastro.html" class="cta-button">CADASTRE-SE</a>
+  <a href="#" class="saiba-mais">Saiba mais</a>
 </div>
 
 </body>
