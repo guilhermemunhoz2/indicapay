@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cadastro - IndicaPay</title>
   <style>
     body {
       background-color: #000;
       color: #0f0;
       font-family: Arial, sans-serif;
-      text-align: center;
-      margin-top: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
-    input, button {
-      display: block;
-      margin: 10px auto;
-      padding: 10px;
-      border: none;
-      border-radius: 5px;
+    h1 {
+      color: #0f0;
     }
     input {
+      padding: 10px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 5px;
       width: 250px;
     }
     button {
+      padding: 10px 20px;
       background-color: #0f0;
       color: #000;
-      font-weight: bold;
+      border: none;
+      border-radius: 5px;
       cursor: pointer;
+      margin-top: 10px;
     }
     a {
       color: #0f0;
       text-decoration: none;
-      display: block;
       margin-top: 20px;
+      display: inline-block;
     }
   </style>
 </head>
@@ -40,23 +47,55 @@
 
   <h1>Cadastro</h1>
 
-  <input type="text" id="nome" placeholder="Nome completo" />
-  <input type="email" id="email" placeholder="E-mail" />
-  <input type="password" id="senha" placeholder="Senha" />
-
+  <input type="text" id="nome" placeholder="Nome completo">
+  <input type="email" id="email" placeholder="E-mail">
+  <input type="password" id="senha" placeholder="Senha">
   <button id="btnCadastrar">Cadastrar</button>
 
   <a href="index.html">Voltar para o Início</a>
 
-  <!-- Firebase SDK e Config -->
+  <!-- Firebase SDK -->
   <script type="module">
+    // Importa SDKs do Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
     import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
-    // Configuração do Firebase
+    // Configurações do seu projeto Firebase
     const firebaseConfig = {
-      apiKey: "AIzaSyA10U0aJzXM2G5m7I5BvS1hnhPcJseNlCI",
+      apiKey: "AIzaSyA100UaJzXM2G5m7I5BvS1hnhPcJseNlCI",
       authDomain: "indicapay-6162f.firebaseapp.com",
       projectId: "indicapay-6162f",
       storageBucket: "indicapay-6162f.appspot.com",
-      messagingSenderId: "351397382935
+      messagingSenderId: "351397382935",
+      appId: "1:351397382935:web:3027a03a266a5abee0552",
+      measurementId: "G-KRGNYNVEDT"
+    };
+
+    // Inicializa o Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Função de cadastro
+    document.getElementById("btnCadastrar").addEventListener("click", () => {
+      const nome = document.getElementById("nome").value;
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+
+      if (nome === "" || email === "" || senha === "") {
+        alert("Por favor, preencha todos os campos!");
+        return;
+      }
+
+      createUserWithEmailAndPassword(auth, email, senha)
+        .then((userCredential) => {
+          alert("Cadastro realizado com sucesso!");
+          window.location.href = "login.html";
+        })
+        .catch((error) => {
+          alert("Erro ao cadastrar: " + error.message);
+        });
+    });
+  </script>
+
+</body>
+</html>
