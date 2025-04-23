@@ -2,11 +2,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Painel - IndicaPay</title>
+  <title>IndicaPay Painel</title>
   <style>
     body {
-      background-color: #000;
-      color: #0f0;
+      background-color: #121212;
+      color: #39ff14;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
@@ -15,32 +15,27 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 20px;
-      background-color: #111;
-    }
-    .topbar h1 {
-      color: #0f0;
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 8px;
     }
     .card {
-      background-color: #111;
+      background: #1c1c1c;
       padding: 20px;
-      border-radius: 10px;
-      margin: 20px 0;
-    }
-    .card h2 {
-      margin: 0 0 10px;
-      color: #0f0;
-    }
-    .card p {
-      font-size: 18px;
+      margin-top: 20px;
+      border-radius: 8px;
     }
     button {
-      padding: 10px 20px;
-      background-color: #0f0;
-      color: #000;
+      padding: 8px 15px;
+      background: #39ff14;
       border: none;
       border-radius: 5px;
+      color: #000;
+      font-weight: bold;
       cursor: pointer;
+    }
+    .value {
+      font-size: 1.5em;
       margin-top: 10px;
     }
   </style>
@@ -49,7 +44,7 @@
 
 <div class="topbar">
   <h1>IndicaPay Painel</h1>
-  <button onclick="logout()">Sair</button>
+  <button id="btnLogout">Sair</button>
 </div>
 
 <div class="card">
@@ -57,28 +52,30 @@
 </div>
 
 <div class="card">
-  <h2>Saldo Atual</h2>
-  <p id="saldo">R$ 0,00</p>
+  <h3>Saldo Atual</h3>
+  <div class="value" id="saldoUsuario">R$ 0,00</div>
 </div>
 
 <div class="card">
-  <h2>Último Depósito</h2>
-  <p id="deposito">R$ 0,00</p>
+  <h3>Último Depósito</h3>
+  <div class="value" id="depositoUsuario">R$ 0,00</div>
 </div>
 
 <div class="card">
-  <h2>Seu link de indicação:</h2>
-  <p id="linkIndicacao">Carregando...</p>
+  <h3>Seu link de indicação:</h3>
+  <div id="linkIndicacao">Carregando...</div>
 </div>
 
+<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
   import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore.js";
+  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA10U0aJzXM2G5m7I5BvS1hnhPcJseNlCI",
     authDomain: "indicapay-6162f.firebaseapp.com",
+    databaseURL: "https://indicapay-6162f-default-rtdb.firebaseio.com",
     projectId: "indicapay-6162f",
     storageBucket: "indicapay-6162f.appspot.com",
     messagingSenderId: "351397382935",
@@ -88,30 +85,39 @@
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db = getFirestore(app);
+  const db = getDatabase(app);
 
-  onAuthStateChanged(auth, async (user) => {
+  const nomeUsuario = document.getElementById("nomeUsuario");
+  const saldoUsuario = document.getElementById("saldoUsuario");
+  const depositoUsuario = document.getElementById("depositoUsuario");
+  const linkIndicacao = document.getElementById("linkIndicacao");
+  const btnLogout = document.getElementById("btnLogout");
+
+  onAuthStateChanged(auth, (user) => {
     if (user) {
-      const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-      if (userDoc.exists()) {
-        const dados = userDoc.data();
-        document.getElementById("nomeUsuario").innerText = dados.nome;
-        document.getElementById("saldo").innerText = `R$ ${dados.saldo.toFixed(2)}`;
-        document.getElementById("deposito").innerText = `R$ ${dados.deposito.toFixed(2)}`;
-        document.getElementById("linkIndicacao").innerText = `https://indicapay.vercel.app/cadastro.html?ref=${user.uid}`;
-      } else {
-        alert("Usuário sem dados cadastrados.");
-      }
+      const uid = user.uid;
+      const usuarioRef = ref(db, 'usuarios/' + uid);
+      get(usuarioRef).then((snapshot) => {
+        if (snapshot.exists()) {
+          const dados = snapshot.val();
+          nomeUsuario.textContent = dados.nome || "Usuário";
+          saldoUsuario.textContent = "R$ " + (dados.saldo || "0,00");
+          depositoUsuario.textContent = "R$ " + (dados.ultimoDeposito || "0,00");
+          linkIndicacao.textContent = window.location.origin + "/cadastro.html?ref=" + uid;
+        } else {
+          nomeUsuario.textContent = "Visitante";
+        }
+      });
     } else {
       window.location.href = "login.html";
     }
   });
 
-  function logout() {
+  btnLogout.addEventListener("click", () => {
     signOut(auth).then(() => {
       window.location.href = "index.html";
     });
-  }
+  });
 </script>
 
 </body>
