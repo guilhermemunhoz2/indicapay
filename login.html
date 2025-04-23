@@ -1,43 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Login - IndicaPay</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #39ff14;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        input, button {
-            padding: 10px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-        }
-        input {
-            width: 200px;
-        }
-        button {
-            background-color: #39ff14;
-            color: #121212;
-            cursor: pointer;
-        }
-        a {
-            color: #39ff14;
-            text-decoration: none;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Login - IndicaPay</title>
+  <style>
+    body {
+      background-color: #121212;
+      color: #39ff14;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px;
+    }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    input {
+      width: 200px;
+    }
+    button {
+      background-color: #39ff14;
+      color: #121212;
+      cursor: pointer;
+    }
+    a {
+      color: #39ff14;
+      text-decoration: none;
+    }
+  </style>
 </head>
 <body>
-    <h1>Login</h1>
-    <form action="#" method="post">
-        <input type="email" placeholder="E-mail" required><br>
-        <input type="password" placeholder="Senha" required><br>
-        <button type="submit">Entrar</button>
-    </form>
-    <p><a href="index.html">Voltar para o Início</a></p>
+
+  <h1>Login</h1>
+
+  <input type="email" id="email" placeholder="E-mail" required><br>
+  <input type="password" id="senha" placeholder="Senha" required><br>
+  <button id="btnLogin">Entrar</button>
+
+  <p><a href="index.html">Voltar para o Início</a></p>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Importa SDKs do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    // Configurações do seu projeto Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA10U0aJzXM2G5m7I5BvS1hnhPcJseNlCI",
+      authDomain: "indicapay-6162f.firebaseapp.com",
+      projectId: "indicapay-6162f",
+      storageBucket: "indicapay-6162f.appspot.com",
+      messagingSenderId: "351397382935",
+      appId: "1:351397382935:web:3027a03a266a5abee00552",
+      measurementId: "G-KRGNYNVEDT"
+    };
+
+    // Inicializa o Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    // Função de login
+    document.getElementById("btnLogin").addEventListener("click", () => {
+      const email = document.getElementById("email").value;
+      const senha = document.getElementById("senha").value;
+
+      if (email === "" || senha === "") {
+        alert("Por favor, preencha todos os campos!");
+        return;
+      }
+
+      signInWithEmailAndPassword(auth, email, senha)
+        .then((userCredential) => {
+          alert("Login realizado com sucesso!");
+          window.location.href = "painel.html"; // redireciona pro dashboard
+        })
+        .catch((error) => {
+          alert("Erro ao fazer login: " + error.message);
+        });
+    });
+  </script>
+
 </body>
 </html>
