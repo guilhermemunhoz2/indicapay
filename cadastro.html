@@ -54,28 +54,10 @@
 
   <a href="index.html">Voltar para o Início</a>
 
-  <!-- Firebase SDK -->
+  <!-- Firebase SDK e configuração -->
   <script type="module">
-    // Importa SDKs do Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+    import { auth, createUserWithEmailAndPassword } from "./firebase-config.js";
 
-    // Configurações do seu projeto Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyA100UaJzXM2G5m7I5BvS1hnhPcJseNlCI",
-      authDomain: "indicapay-6162f.firebaseapp.com",
-      projectId: "indicapay-6162f",
-      storageBucket: "indicapay-6162f.appspot.com",
-      messagingSenderId: "351397382935",
-      appId: "1:351397382935:web:3027a03a266a5abee0552",
-      measurementId: "G-KRGNYNVEDT"
-    };
-
-    // Inicializa o Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // Função de cadastro
     document.getElementById("btnCadastrar").addEventListener("click", () => {
       const nome = document.getElementById("nome").value;
       const email = document.getElementById("email").value;
