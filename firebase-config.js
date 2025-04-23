@@ -17,5 +17,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-// Exporta a instância de auth e métodos para usar no cadastro e login
+// Exporta auth e métodos para usar no cadastro e login
 export { auth, createUserWithEmailAndPassword, signInWithEmailAndPassword };
