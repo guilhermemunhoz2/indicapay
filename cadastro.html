@@ -4,6 +4,25 @@
     <meta charset="UTF-8">
     <title>Cadastro - IndicaPay</title>
     <style>
+        <script type="module">
+  import { auth, createUserWithEmailAndPassword } from './firebase-config.js';
+
+  const btnCadastrar = document.getElementById("btnCadastrar");
+  btnCadastrar.addEventListener("click", () => {
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    createUserWithEmailAndPassword(auth, email, senha)
+      .then((userCredential) => {
+        alert("Cadastro realizado com sucesso!");
+        window.location.href = "login.html";
+      })
+      .catch((error) => {
+        alert("Erro: " + error.message);
+      });
+  });
+</script>
+
         body {
             background-color: #121212;
             color: #39ff14;
