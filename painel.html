@@ -2,11 +2,12 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>IndicaPay Painel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel - IndicaPay</title>
   <style>
     body {
-      background-color: #121212;
-      color: #39ff14;
+      background-color: #0a0a0a;
+      color: #d0f0c0;
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 20px;
@@ -15,108 +16,104 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #1c1c1c;
-      padding: 20px;
+      background-color: #111;
+      padding: 15px;
       border-radius: 8px;
+      margin-bottom: 20px;
     }
-    .card {
-      background: #1c1c1c;
-      padding: 20px;
-      margin-top: 20px;
-      border-radius: 8px;
+    .topbar h1 {
+      color: #39ff14;
+      margin: 0;
     }
-    button {
-      padding: 8px 15px;
-      background: #39ff14;
+    .refresh {
+      background-color: #39ff14;
+      color: #000;
       border: none;
       border-radius: 5px;
-      color: #000;
-      font-weight: bold;
+      padding: 5px 10px;
       cursor: pointer;
     }
-    .value {
-      font-size: 1.5em;
-      margin-top: 10px;
+    .card {
+      background-color: #111;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 15px;
+    }
+    .card h2 {
+      color: #39ff14;
+      margin-bottom: 10px;
+    }
+    .card button {
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+    .deposit {
+      background-color: #39ff14;
+      color: #000;
+    }
+    .withdraw {
+      background-color: #000;
+      color: #39ff14;
+      border: 1px solid #39ff14;
     }
   </style>
 </head>
 <body>
 
 <div class="topbar">
-  <h1>IndicaPay Painel</h1>
-  <button id="btnLogout">Sair</button>
+  <h1>IndicaPay</h1>
+  <button class="refresh" onclick="location.reload()">🔄 Atualizar</button>
 </div>
 
 <div class="card">
-  <h2>Olá, <span id="nomeUsuario">Carregando...</span>!</h2>
+  <h2 id="userName">Olá, Carregando...</h2>
 </div>
 
 <div class="card">
-  <h3>Saldo Atual</h3>
-  <div class="value" id="saldoUsuario">R$ 0,00</div>
+  <h2>Saldo</h2>
+  <p style="font-size: 24px;">R$ <span id="saldo">0,00</span></p>
+  <button class="deposit">Depositar</button>
+  <button class="withdraw">Sacar</button>
 </div>
 
 <div class="card">
-  <h3>Último Depósito</h3>
-  <div class="value" id="depositoUsuario">R$ 0,00</div>
+  <h2>Último Depósito</h2>
+  <p>R$ <span id="ultimoDeposito">0,00</span></p>
 </div>
 
 <div class="card">
-  <h3>Seu link de indicação:</h3>
-  <div id="linkIndicacao">Carregando...</div>
+  <h2>Seu link de indicação:</h2>
+  <p id="linkIndicacao">Carregando...</p>
 </div>
 
-<!-- Firebase SDK -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
-  import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-database.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA10U0aJzXM2G5m7I5BvS1hnhPcJseNlCI",
     authDomain: "indicapay-6162f.firebaseapp.com",
-    databaseURL: "https://indicapay-6162f-default-rtdb.firebaseio.com",
     projectId: "indicapay-6162f",
     storageBucket: "indicapay-6162f.appspot.com",
     messagingSenderId: "351397382935",
-    appId: "1:351397382935:web:3027a03a266a5abee00552",
-    measurementId: "G-KRGNYNVEDT"
+    appId: "1:351397382935:web:3027a03a266a5abee00552"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
-  const db = getDatabase(app);
-
-  const nomeUsuario = document.getElementById("nomeUsuario");
-  const saldoUsuario = document.getElementById("saldoUsuario");
-  const depositoUsuario = document.getElementById("depositoUsuario");
-  const linkIndicacao = document.getElementById("linkIndicacao");
-  const btnLogout = document.getElementById("btnLogout");
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      const uid = user.uid;
-      const usuarioRef = ref(db, 'usuarios/' + uid);
-      get(usuarioRef).then((snapshot) => {
-        if (snapshot.exists()) {
-          const dados = snapshot.val();
-          nomeUsuario.textContent = dados.nome || "Usuário";
-          saldoUsuario.textContent = "R$ " + (dados.saldo || "0,00");
-          depositoUsuario.textContent = "R$ " + (dados.ultimoDeposito || "0,00");
-          linkIndicacao.textContent = window.location.origin + "/cadastro.html?ref=" + uid;
-        } else {
-          nomeUsuario.textContent = "Visitante";
-        }
-      });
+      document.getElementById('userName').innerText = `Olá, ${user.displayName || user.email}`;
+      document.getElementById('linkIndicacao').innerText = `https://indicapay.vercel.app/cadastro.html?ref=${user.uid}`;
+      document.getElementById('saldo').innerText = "150,00";
+      document.getElementById('ultimoDeposito').innerText = "50,00";
     } else {
       window.location.href = "login.html";
     }
-  });
-
-  btnLogout.addEventListener("click", () => {
-    signOut(auth).then(() => {
-      window.location.href = "index.html";
-    });
   });
 </script>
 
