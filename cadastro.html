@@ -1,63 +1,62 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastro - IndicaPay</title>
-    <style>
-        <script type="module">
-  import { auth, createUserWithEmailAndPassword } from './firebase-config.js';
-
-  const btnCadastrar = document.getElementById("btnCadastrar");
-  btnCadastrar.addEventListener("click", () => {
-    const email = document.getElementById("email").value;
-    const senha = document.getElementById("senha").value;
-
-    createUserWithEmailAndPassword(auth, email, senha)
-      .then((userCredential) => {
-        alert("Cadastro realizado com sucesso!");
-        window.location.href = "login.html";
-      })
-      .catch((error) => {
-        alert("Erro: " + error.message);
-      });
-  });
-</script>
-
-        body {
-            background-color: #121212;
-            color: #39ff14;
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-        }
-        input, button {
-            padding: 10px;
-            margin: 10px;
-            border: none;
-            border-radius: 5px;
-        }
-        input {
-            width: 200px;
-        }
-        button {
-            background-color: #39ff14;
-            color: #121212;
-            cursor: pointer;
-        }
-        a {
-            color: #39ff14;
-            text-decoration: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cadastro - IndicaPay</title>
+  <style>
+    body {
+      background-color: #000;
+      color: #0f0;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+    input, button {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      border: none;
+      border-radius: 5px;
+    }
+    input {
+      width: 250px;
+    }
+    button {
+      background-color: #0f0;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    a {
+      color: #0f0;
+      text-decoration: none;
+      display: block;
+      margin-top: 20px;
+    }
+  </style>
 </head>
 <body>
-    <h1>Cadastro</h1>
-    <form action="#" method="post">
-        <input type="text" placeholder="Nome completo" required><br>
-        <input type="email" placeholder="E-mail" required><br>
-        <input type="password" placeholder="Senha" required><br>
-        <button type="submit">Cadastrar</button>
-    </form>
-    <p><a href="index.html">Voltar para o Início</a></p>
-</body>
-</html>
+
+  <h1>Cadastro</h1>
+
+  <input type="text" id="nome" placeholder="Nome completo" />
+  <input type="email" id="email" placeholder="E-mail" />
+  <input type="password" id="senha" placeholder="Senha" />
+
+  <button id="btnCadastrar">Cadastrar</button>
+
+  <a href="index.html">Voltar para o Início</a>
+
+  <!-- Firebase SDK e Config -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyA10U0aJzXM2G5m7I5BvS1hnhPcJseNlCI",
+      authDomain: "indicapay-6162f.firebaseapp.com",
+      projectId: "indicapay-6162f",
+      storageBucket: "indicapay-6162f.appspot.com",
+      messagingSenderId: "351397382935
