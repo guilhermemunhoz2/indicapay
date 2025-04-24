@@ -25,7 +25,11 @@
       color: #39ff14;
       margin: 0;
     }
-    .refresh {
+    .topbar .buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .refresh, .logout {
       background-color: #39ff14;
       color: #000;
       border: none;
@@ -65,7 +69,10 @@
 
 <div class="topbar">
   <h1>IndicaPay</h1>
-  <button class="refresh" onclick="location.reload()">🔄 Atualizar</button>
+  <div class="buttons">
+    <button class="refresh" onclick="location.reload()">🔄 Atualizar</button>
+    <button class="logout" id="btnLogout">🚪 Sair</button>
+  </div>
 </div>
 
 <div class="card">
@@ -91,7 +98,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.11.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyA10U0aJzXM2G5m7I5BvS1hnhPcJseNlCI",
@@ -114,6 +121,15 @@
     } else {
       window.location.href = "login.html";
     }
+  });
+
+  // Função de logout
+  document.getElementById('btnLogout').addEventListener('click', () => {
+    signOut(auth).then(() => {
+      window.location.href = "login.html";
+    }).catch((error) => {
+      alert("Erro ao sair: " + error.message);
+    });
   });
 </script>
 
