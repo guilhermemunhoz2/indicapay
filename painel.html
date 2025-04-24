@@ -107,7 +107,7 @@
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      document.getElementById('userName').innerText = `Olá, ${user.displayName || user.email}`;
+      document.getElementById('userName').innerText = `Olá, ${user.displayName}`;
       document.getElementById('linkIndicacao').innerText = `https://indicapay.vercel.app/cadastro.html?ref=${user.uid}`;
       document.getElementById('saldo').innerText = "150,00";
       document.getElementById('ultimoDeposito').innerText = "50,00";
